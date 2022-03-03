@@ -30,24 +30,27 @@ if(isset($_SESSION['session_username'])){
     exit();
 }
 
+// langkah pertama 
+
 if(isset($_POST['login'])){
     $username   = $_POST['username'];
     $password   = $_POST['password'];
     $ingataku   = $_POST['ingataku'];
-
+    // JIKA PASSWORD DAN USERNAME KOSONG
     if($username == '' or $password == ''){
         $err .= "<li>Silakan masukkan username dan juga password.</li>";
     }else{
         $sql1 = "select * from login where username = '$username'";
         $q1   = mysqli_query($koneksi,$sql1);
         $r1   = mysqli_fetch_array($q1);
-
+        // JIKA USERNAME DAN PASSWORD TIDAK SAMA DENGAN DATABSE
+        
         if($r1['username'] == ''){
             $err .= "<li>Username <b>$username</b> tidak tersedia.</li>";
         }elseif($r1['password'] != md5($password)){
             $err .= "<li>Password yang dimasukkan tidak sesuai.</li>";
         }       
-        
+        // JIKA TIDAK ADA ERROR
         if(empty($err)){
             $_SESSION['session_username'] = $username; //server
             $_SESSION['session_password'] = md5($password);
